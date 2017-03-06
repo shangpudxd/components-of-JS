@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{width:100px; height:100px; background:orangered; position:absolute;}
+        h2{width:200px; height:2000px; background:black;}
+    </style>
+    <script>
+        function crashNdrag(id,l){
+            var oDiv  =document.getElementById(id),
+                    ySpeed= 0,
+                    xSpeed= 0,
+                    lasty= 0,
+                    lastx= 0,
+                    left= 0,
+                    top= 0,
+                    position=[];
+            oDiv.onmousedown=function(ev){
+                clearInterval(oDiv.timer);
+                var oEvent = ev||event;
+                var disx=oEvent.clientX-oDiv.offsetLeft;
+                var disy=oEvent.clientY-oDiv.offsetTop;
+                oDiv.timer2=setInterval(function(){
+                ySpeed=lasty-position[0];
+                xSpeed=lastx-position[1];
+                position[0]=lasty;
+                position[1]=lastx;
+                },30);
+                document.onmousemove=function(ev){
+                    var oEvent = ev||event;
+                    console.log(oEvent);
+                    oDiv.style.left=oEvent.clientX-disx+'px';
+                    oDiv.style.top=oEvent.clientY-disy+'px';
+                    lasty=oEvent.clientY;
+                    lastx=oEvent.clientX;
+                    limit(oDiv,l)
+                };
+                document.onmouseup=function(){
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                    clearInterval(oDiv.timer2);
+                    move(oDiv,l);
+                    oDiv.releaseCapture&&oDiv.releaseCapture();
+                };
+                oDiv.setCapture&&oDiv.setCapture();
+                return false;
+            };
+            function limit(obj,limit){
+                limit=limit||[0,document.documentElement.clientHeight,0,document.documentElement.clientWidth];
+                if(obj.offsetTop<limit[0]){
+                    obj.style.top=limit[0]+'px'
+                }
+                if(obj.offsetTop>limit[1]-obj.offsetHeight){
+                    obj.style.top=limit[1]-obj.offsetHeight+'px'
+                }
+                if(obj.offsetLeft<limit[2]){
+                    obj.style.left=limit[2]+'px'
+                }
+                if(obj.offsetLeft>limit[3]-obj.offsetWidth){
+                    obj.style.left=limit[3]-obj.offsetWidth+'px'
+                }
+            }
+            function move(obj,limit){
+                clearInterval(obj.timer);
+                limit=limit||[0,document.documentElement.clientHeight,0,document.documentElement.clientWidth];
+                obj.timer=setInterval(function(){
+                    ySpeed+=4;
+                    top=obj.offsetTop+ySpeed;
+                    left=obj.offsetLeft+xSpeed;
+                    if(top<limit[0]){
+                        top=limit[0];
+                        ySpeed*=-0.8;
+                        xSpeed*=0.8
+                    }
+                    if(top>limit[1]-obj.offsetHeight){
+                        top=limit[1]-obj.offsetHeight;
+                        ySpeed*=-0.8;
+                        xSpeed*=0.8
+                    }
+                    if(left<limit[2]){
+                        left=limit[2];
+                        xSpeed*=-0.8;
+                        ySpeed*=0.8
+                    }
+                    if(left>limit[3]-obj.offsetWidth){
+                        left=limit[3]-obj.offsetWidth;
+                        xSpeed*=-0.8;
+                        ySpeed*=0.8
+                    }
+                    if(Math.abs(xSpeed)<1)xSpeed=0;
+                    if(Math.abs(ySpeed)<1)ySpeed=0;
+                    obj.style.top=top+'px';
+                    obj.style.left=left+'px';
+                    if(Math.round(obj.offsetTop)==limit[1]-obj.offsetHeight&&xSpeed==0&&ySpeed==0){
+                        clearInterval(obj.timer)
+                    }
+                },30)
+            }
+        }
+        window.onload=function(){
+            crashNdrag('div')
+        }
+    </script>
+</head>
+<body>
+<div id="div"></div>
+<h2></h2>
+</body>
+</html>

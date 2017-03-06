@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{background:red; width:200px; height:200px; position: absolute;}
+        /*#div1{background:blue; width:200px; height:200px; position: absolute; right:0;}*/
+    </style>
+    <script src="drag.js"></script>
+    <script src="framedrag.js"></script>
+    <!--<script src="limitdrag.js"></script>-->
+    <script>
+        window.onload=function(){
+            new Framedrag('div');
+            //new Limitdrag('div1');
+        }
+    </script>
+</head>
+<body>
+<div id="div"></div>
+<!--<div id="div1"></div>-->
+</body>
+</html>

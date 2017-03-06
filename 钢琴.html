@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+<style>
+*{margin:0; padding:0; list-style:none;}
+ul{ overflow:hidden;}
+ul li{ float:left; width:12.5%; height:200px; text-align:center;line-height:200px; font-size:30px; border:1px solid #000; margin-left:-2px;}
+ul li.on{ background:#ebebeb;}
+</style>
+<script src="sound.js"></script>
+<script>
+window.onload = function(){
+	var oA = document.querySelector('audio');
+	var aLi = document.querySelectorAll('ul li');
+	document.onkeydown = function(ev){
+		if(ev.keyCode>=49&&ev.keyCode<=56){
+			aLi[ev.keyCode-49].className = 'on';
+			oA.src = oggSound['sound'+ev.keyCode];
+			oA.play();
+		}
+	};
+	document.onkeyup = function(ev){
+		if(ev.keyCode>=49&&ev.keyCode<=56){
+			aLi[ev.keyCode-49].className = '';
+		}
+	};
+};
+</script>
+</head>
+
+<body>
+	<audio></audio>
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+	</ul>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

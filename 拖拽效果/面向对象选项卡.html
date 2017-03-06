@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #tab div{background:#ccc; width:200px; height:200px; display: none;}
+        #tab .on{background:#00a0dc; display:block;}
+        .active{background:#ea0f1f;}
+    </style>
+    <script>
+        function Tab(id){
+            this.oTab = document.getElementById(id);
+            this.aBtn = this.oTab.getElementsByTagName('input');
+            this.aDiv = this.oTab.getElementsByTagName('div');
+            this.iNow = 0;
+            this.init();
+        }
+        Tab.prototype.init=function(){
+            var _this=this;
+            for(var i=0;i<this.aBtn.length;i++){
+                this.aBtn[i].index=i;
+                this.aBtn[i].onclick=function(){
+                    _this.iNow=this.index;
+                    _this.tab()
+                }
+            }
+        };
+        Tab.prototype.tab=function(){
+            for(var i=0;i<this.aBtn.length;i++){
+                this.aBtn[i].className='';
+                this.aDiv[i].className='';
+            }
+            this.aBtn[this.iNow].className='active';
+            this.aDiv[this.iNow].className='on';
+        };
+        window.onload=function(){
+            new Tab('tab')
+        }
+    </script>
+</head>
+<body>
+<div id="tab">
+    <input type="button" value="aaa" class="active">
+    <input type="button" value="bbb">
+    <input type="button" value="ccc">
+    <div class="on">aaa</div>
+    <div class="">bbb</div>
+    <div class="">ccc</div>
+</div>
+</body>
+</html>
